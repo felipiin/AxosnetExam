@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ExamenModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Moneda">
+          <Key>
+            <PropertyRef Name="idMoneda" />
+          </Key>
+          <Property Name="idMoneda" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Moneda" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="Activo" Type="bit" />
+        </EntityType>
+        <EntityType Name="Proveedor">
+          <Key>
+            <PropertyRef Name="idProveedor" />
+          </Key>
+          <Property Name="idProveedor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Proveedor" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Activo" Type="bit" />
+        </EntityType>
+        <EntityType Name="Recibo">
+          <Key>
+            <PropertyRef Name="idRecibo" />
+          </Key>
+          <Property Name="idRecibo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Monto" Type="decimal" Precision="9" Scale="2" Nullable="false" />
+          <Property Name="IdMoneda" Type="int" />
+          <Property Name="IdProveedor" Type="int" />
+          <Property Name="Fecha" Type="datetime" />
+          <Property Name="Comentario" Type="varchar" MaxLength="500" />
+          <Property Name="Activo" Type="bit" />
+        </EntityType>
+        <EntityType Name="token">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Activo" Type="bit" />
+          <Property Name="token" Type="varchar(max)" />
+        </EntityType>
+        <Association Name="FK_Recibo_Moneda">
+          <End Role="Moneda" Type="Self.Moneda" Multiplicity="0..1" />
+          <End Role="Recibo" Type="Self.Recibo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Moneda">
+              <PropertyRef Name="idMoneda" />
+            </Principal>
+            <Dependent Role="Recibo">
+              <PropertyRef Name="IdMoneda" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Recibo_Proveedor">
+          <End Role="Proveedor" Type="Self.Proveedor" Multiplicity="0..1" />
+          <End Role="Recibo" Type="Self.Recibo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proveedor">
+              <PropertyRef Name="idProveedor" />
+            </Principal>
+            <Dependent Role="Recibo">
+              <PropertyRef Name="IdProveedor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ExamenModelStoreContainer">
+          <EntitySet Name="Moneda" EntityType="Self.Moneda" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Proveedor" EntityType="Self.Proveedor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Recibo" EntityType="Self.Recibo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="token" EntityType="Self.token" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Recibo_Moneda" Association="Self.FK_Recibo_Moneda">
+            <End Role="Moneda" EntitySet="Moneda" />
+            <End Role="Recibo" EntitySet="Recibo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Recibo_Proveedor" Association="Self.FK_Recibo_Proveedor">
+            <End Role="Proveedor" EntitySet="Proveedor" />
+            <End Role="Recibo" EntitySet="Recibo" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ExamenModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ExamenEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Moneda" EntityType="ExamenModel.Moneda" />
+          <EntitySet Name="Proveedor" EntityType="ExamenModel.Proveedor" />
+          <EntitySet Name="Recibo" EntityType="ExamenModel.Recibo" />
+          <EntitySet Name="token" EntityType="ExamenModel.token" />
+          <AssociationSet Name="FK_Recibo_Moneda" Association="ExamenModel.FK_Recibo_Moneda">
+            <End Role="Moneda" EntitySet="Moneda" />
+            <End Role="Recibo" EntitySet="Recibo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Recibo_Proveedor" Association="ExamenModel.FK_Recibo_Proveedor">
+            <End Role="Proveedor" EntitySet="Proveedor" />
+            <End Role="Recibo" EntitySet="Recibo" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Moneda">
+          <Key>
+            <PropertyRef Name="idMoneda" />
+          </Key>
+          <Property Name="idMoneda" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Moneda1" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="Activo" Type="Boolean" />
+          <NavigationProperty Name="Recibo" Relationship="ExamenModel.FK_Recibo_Moneda" FromRole="Moneda" ToRole="Recibo" />
+        </EntityType>
+        <EntityType Name="Proveedor">
+          <Key>
+            <PropertyRef Name="idProveedor" />
+          </Key>
+          <Property Name="idProveedor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Proveedor1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Activo" Type="Boolean" />
+          <NavigationProperty Name="Recibo" Relationship="ExamenModel.FK_Recibo_Proveedor" FromRole="Proveedor" ToRole="Recibo" />
+        </EntityType>
+        <EntityType Name="Recibo">
+          <Key>
+            <PropertyRef Name="idRecibo" />
+          </Key>
+          <Property Name="idRecibo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Monto" Type="Decimal" Nullable="false" Precision="9" Scale="2" />
+          <Property Name="Fecha" Type="DateTime" Precision="3" />
+          <Property Name="Comentario" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Activo" Type="Boolean" />
+          <NavigationProperty Name="Moneda" Relationship="ExamenModel.FK_Recibo_Moneda" FromRole="Recibo" ToRole="Moneda" />
+          <NavigationProperty Name="Proveedor" Relationship="ExamenModel.FK_Recibo_Proveedor" FromRole="Recibo" ToRole="Proveedor" />
+        </EntityType>
+        <EntityType Name="token">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Activo" Type="Boolean" />
+          <Property Name="token1" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_Recibo_Moneda">
+          <End Type="ExamenModel.Moneda" Role="Moneda" Multiplicity="0..1" />
+          <End Type="ExamenModel.Recibo" Role="Recibo" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_Recibo_Proveedor">
+          <End Type="ExamenModel.Proveedor" Role="Proveedor" Multiplicity="0..1" />
+          <End Type="ExamenModel.Recibo" Role="Recibo" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ExamenModelStoreContainer" CdmEntityContainer="ExamenEntities">
+          <EntitySetMapping Name="Moneda">
+            <EntityTypeMapping TypeName="ExamenModel.Moneda">
+              <MappingFragment StoreEntitySet="Moneda">
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="Moneda1" ColumnName="Moneda" />
+                <ScalarProperty Name="idMoneda" ColumnName="idMoneda" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Proveedor">
+            <EntityTypeMapping TypeName="ExamenModel.Proveedor">
+              <MappingFragment StoreEntitySet="Proveedor">
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="Proveedor1" ColumnName="Proveedor" />
+                <ScalarProperty Name="idProveedor" ColumnName="idProveedor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Recibo">
+            <EntityTypeMapping TypeName="ExamenModel.Recibo">
+              <MappingFragment StoreEntitySet="Recibo">
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="Comentario" ColumnName="Comentario" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="Monto" ColumnName="Monto" />
+                <ScalarProperty Name="idRecibo" ColumnName="idRecibo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="token">
+            <EntityTypeMapping TypeName="ExamenModel.token">
+              <MappingFragment StoreEntitySet="token">
+                <ScalarProperty Name="token1" ColumnName="token" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK_Recibo_Moneda" TypeName="ExamenModel.FK_Recibo_Moneda" StoreEntitySet="Recibo">
+            <EndProperty Name="Recibo">
+              <ScalarProperty Name="idRecibo" ColumnName="idRecibo" />
+            </EndProperty>
+            <EndProperty Name="Moneda">
+              <ScalarProperty Name="idMoneda" ColumnName="IdMoneda" />
+            </EndProperty>
+            <Condition ColumnName="IdMoneda" IsNull="false" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_Recibo_Proveedor" TypeName="ExamenModel.FK_Recibo_Proveedor" StoreEntitySet="Recibo">
+            <EndProperty Name="Recibo">
+              <ScalarProperty Name="idRecibo" ColumnName="idRecibo" />
+            </EndProperty>
+            <EndProperty Name="Proveedor">
+              <ScalarProperty Name="idProveedor" ColumnName="IdProveedor" />
+            </EndProperty>
+            <Condition ColumnName="IdProveedor" IsNull="false" />
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
